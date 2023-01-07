@@ -25,7 +25,7 @@ db.mongoose
     useUnifiedTopology: true
   })
   .then(() => {
-    console.log("Successfully connect to MongoDB.");
+    console.log("Connection a la base de donnee reussie ");
     initial();
   })
   .catch(err => {
@@ -34,11 +34,14 @@ db.mongoose
   });
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+require('./app/routes/Terrain')(app);
+require('./app/routes/Form')(app);
+app.get('/', (req, res) => {
+    res.json({"message": "En attente de reponse au porrt :D"});
 });
 
-// routes
+
+// routes connection
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 
