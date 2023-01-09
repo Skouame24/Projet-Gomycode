@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const dbConfig = require("./app/config/db.config");
 
 const app = express();
 
@@ -17,29 +16,29 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
+const { mongoose } = require("./app/models");
 const Role = db.role;
 
-db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => {
-    console.log("Connection a la base de donnee reussie ");
-    initial();
-  })
-  .catch(err => {
-    console.error("Connection error", err);
-    process.exit();
+const url = "mongodb+srv://Sam:Sami2020@cluster0.w3lgkwh.mongodb.net/test";
+
+
+mongoose.connect(url, {
+  useNewUrlParser: true, 
+
+  useUnifiedTopology: true 
+  
+  }, err => {
+  if(err) throw err;
+  console.log('Connection reussie a la base de donnee MongoDB!!!')
   });
+
 
 // simple route
 require('./app/routes/Terrain')(app);
 require('./app/routes/Form')(app);
 app.get('/', (req, res) => {
-    res.json({"message": "En attente de reponse au porrt :D"});
+    res.json({"message": "En attente de reponse au port : "});
 });
-
 
 // routes connection
 require("./app/routes/auth.routes")(app);
